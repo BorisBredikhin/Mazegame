@@ -11,11 +11,17 @@ namespace Mazegame.Model
         private CellType[,] _maze;
         public readonly Size Size;
 
+        public Player Player { get; private set; }
+        public readonly Point EndPoint;
+        
         public Maze(Size size)
         {
             Size = size;
             _maze = new CellType[Size.Width,Size.Height];
+            Player = new Player(this);
             Generate();
+            EndPoint = new Point(Size.Width-2, Size.Height-2);
+            _maze[EndPoint.X, EndPoint.Y] = CellType.Cell;
         }
 
         public void Generate(int? seed = null)
@@ -25,6 +31,7 @@ namespace Mazegame.Model
             GenerateStartFrame();
 
             GenerateDFS(random);
+            Player.Position = new Point(1, 1);
         }
 
         private void GenerateDFS(Random random)
